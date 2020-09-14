@@ -1,2 +1,2 @@
 # practice-aod_generation
-AOD practice
+Прошин Алексей Васильевич
