@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-#include "BinaryFile.h"
-
 using namespace std;
 
 struct Node
