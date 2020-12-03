@@ -1,4 +1,4 @@
-﻿#pragma warning(disable : 4996)
+#pragma warning(disable : 4996)
 
 // Метод Дейкстра 
 // Граф 14.4.5
@@ -35,7 +35,7 @@ struct node {
     };
 
     void addFirstNode() {
-        cout << "Введите название начального узла графа: ";
+        cout << "Введите название начального  Корня: ";
         string nameNode;
         cin >> nameNode;
         first->Nodes = new Node;
@@ -285,6 +285,7 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    node* work = new node;
-    work->menu();
+    node* application = new node;
+    application->addFirstNode();
+    application->menu();
 }
