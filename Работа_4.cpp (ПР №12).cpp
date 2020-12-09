@@ -8,366 +8,294 @@ using namespace std;
 struct Node
 
 {
-
-string key = "";
-
-string name = "";
-
-string add = "";
-
+    string key = "";
+    string name = "";
+    string add = "";
 };
 
 void FileInfo()
-
 {
 
-Node* node;
+    Node* node;
+    ifstream test("File.txt");
+    FILE* BinaryFile;
+    fopen_s(&BinaryFile, "BinaryFile.txt", "wb");
 
-ifstream test("File.txt");
+    string stroka = "";
+    int count = 0;
+    int countSpace = 0;
 
-FILE* BinaryFile;
+    while (true)
+    {
 
-fopen_s(&BinaryFile, "BinaryFile.txt", "wb");
+        node = new Node();
+        getline(test, stroka);
 
-string stroka = "";
+        if (stroka == "")
+        {
 
-int count = 0;
+            break;
 
-int countSpace = 0;
+        }
 
-while (true)
+        for (int i = 0; i <= stroka.size(); i++)
+        {
 
-{
+            if (i < stroka.size())
+            {
 
-node = new Node();
+                if (stroka[i] == ' ')
+                {
 
-getline(test, stroka);
+                    countSpace++;
 
-if (stroka == "")
+                }
 
-{
+                if (countSpace == 0)
+                {
 
-break;
+                    node->key = node->key + stroka[i];
 
-}
+                }
 
-for (int i = 0; i <= stroka.size(); i++)
+                else if (countSpace == 1)
+                {
 
-{
+                    node->name = node->name + stroka[i];
 
-if (i < stroka.size())
+                }
 
-{
+                else if (countSpace == 2)
+                {
 
-if (stroka[i] == ' ')
+                    node->add = node->add + stroka[i];
 
-{
+                }
 
-countSpace++;
+            }
 
-}
+            else
+            {
 
-if (countSpace == 0)
+                fwrite(node, sizeof(Node), 1, BinaryFile);
 
-{
+            }
 
-node->key = node->key + stroka[i];
+        }
 
-}
+        stroka = "";
 
-else if (countSpace == 1)
+        countSpace = 0;
 
-{
+    }
 
-node->name = node->name + stroka[i];
-
-}
-
-else if (countSpace == 2)
-
-{
-
-node->add = node->add + stroka[i];
-
-}
-
-}
-
-else
-
-{
-
-fwrite(node, sizeof(Node), 1, BinaryFile);
-
-}
-
-}
-
-stroka = "";
-
-countSpace = 0;
-
-}
-
-cout << "Данные преобразованы в двоичный файл" << endl;
-
-test.close();
-
-fclose(BinaryFile);
+    cout << "Данные преобразованы в двоичный файл" << endl;
+    test.close();
+    fclose(BinaryFile);
 
 }
 
 void print()
-
 {
 
-int count = 0;
+    int count = 0;
+    string s = "";
+    ifstream BinaryFile("BinaryFile.txt");
 
-string s = "";
+    while (!BinaryFile.eof())
+    {
 
-ifstream BinaryFile("BinaryFile.txt");
+        count++;
+        BinaryFile.read((char*)&s, sizeof(s));
 
-while (!BinaryFile.eof())
+        if (!BinaryFile.eof())
+        {
 
-{
+            cout << s;
 
-count++;
+            {
 
-BinaryFile.read((char*)&s, sizeof(s));
+                cout << endl;
 
-if (!BinaryFile.eof())
+            }
 
-{
+        }
 
-cout << s;
+        else
+        {
 
-{
+            break;
 
-cout << endl;
+        }
 
-}
+    }
 
-}
-
-else
-
-{
-
-break;
-
-}
-
-}
-
-cout << endl;
-
-BinaryFile.close();
+    cout << endl;
+    BinaryFile.close();
 
 }
 
 void definition(int confirmation)
-
 {
 
-string key;
+    string key;
+    cout << "Введите номер читательского билета: ";
 
-cout << "Введите номер читательского билета: ";
+    cin >> key;
+    cout << endl;
+    int count = 0;
+    string s = "";
+    ifstream BinaryFile("BinaryFile.txt", ios::binary | ios::in);
 
-cin >> key;
+    while (!BinaryFile.eof())
+    {
 
-cout << endl;
+        if (!BinaryFile.eof())
+        {
 
-int count = 0;
+            BinaryFile.read((char*)&s, sizeof(s));
 
-string s = "";
+            if (count == 1)
+            {
 
-ifstream BinaryFile("BinaryFile.txt", ios::binary | ios::in);
+                cout << "Искомый ключ: " << s << endl;
 
-while (!BinaryFile.eof())
+                count = 0;
 
-{
+            }
 
-if (!BinaryFile.eof())
+            if (count != 0)
+            {
 
-{
+                count--;
 
-BinaryFile.read((char*)&s, sizeof(s));
+            }
 
-if (count == 1)
+            if (s == key)
+            {
 
-{
+                count = confirmation;
 
-cout << "Искомый ключ: " << s << endl;
+            }
 
-count = 0;
+        }
 
-}
+        else
+        {
 
-if (count != 0)
+            break;
 
-{
+        }
 
-count--;
+    }
 
-}
-
-if (s == key)
-
-{
-
-count = confirmation;
-
-}
-
-}
-
-else
-
-{
-
-break;
-
-}
-
-}
-
-BinaryFile.close();
-
-cout << endl;
+    BinaryFile.close();
+    cout << endl;
 
 }
 
 void Replace(int confirmation)
 
 {
+    string par;
+    if (confirmation == 1)
 
-string par;
+    {
 
-if (confirmation == 1)
+        cout << "Введите ФИО: ";
 
-{
+    }
 
-cout << "Введите ФИО: ";
+    else {
 
-}
+        cout << "Введите адресс: ";
 
-else {
+    }
 
-cout << "Введите адресс: ";
+    cin >> par;
+    cout << endl;
+    string key;
+    cout << "Введите номер читательского билета: ";
+    cin >> key;
+    cout << endl;
+    ifstream BinaryFile("BinaryFile.txt", ios::binary | ios::in);
+    ofstream pTextFile;
+    pTextFile.open("File.txt");
+    int count = 0;
+    string stroka = "";
+    string str1 = "";
+    string str2 = "";
+    string str3 = "";
+    int countStr = 0;
 
-}
+    while (!BinaryFile.eof())
+    {
 
-cin >> par;
+        countStr++;
 
-cout << endl;
+        if (!BinaryFile.eof())
+        {
 
-string key;
+            BinaryFile.read((char*)&stroka, sizeof(stroka));
 
-cout << "Введите номер читательского билета: ";
+            if (countStr == 1)
+            {
 
-cin >> key;
+                str1 = stroka;
 
-cout << endl;
+            }
 
-ifstream BinaryFile("BinaryFile.txt", ios::binary | ios::in);
+            if (countStr == 2)
+            {
+                if (str1 == key && confirmation == 1)
+                {
 
-ofstream pTextFile;
+                    str2 = " " + par;
 
-pTextFile.open("File.txt");
+                }
 
-int count = 0;
+                else
+                {
 
-string stroka = "";
+                    str2 = stroka;
 
-string str1 = "";
+                }
 
-string str2 = "";
+            }
 
-string str3 = "";
+            if (countStr == 3)
+            {
 
-int countStr = 0;
+                if (str1 == key && confirmation == 2)
+                {
 
-while (!BinaryFile.eof())
+                    str3 = " " + par;
 
-{
+                }
 
-countStr++;
+                else
+                {
 
-if (!BinaryFile.eof())
+                    str3 = stroka;
 
-{
+                }
 
-BinaryFile.read((char*)&stroka, sizeof(stroka));
+                pTextFile << str1 << str2 << str3 << endl;
+                countStr = 0;
 
-if (countStr == 1)
+            }
 
-{
+        }
 
-str1 = stroka;
+        else
+        {
 
-}
+            break;
 
-if (countStr == 2)
+        }
+    }
 
-{
-
-if (str1 == key && confirmation == 1)
-
-{
-
-str2 = " " + par;
-
-}
-
-else
-
-{
-
-str2 = stroka;
-
-}
-
-}
-
-if (countStr == 3)
-
-{
-
-if (str1 == key && confirmation == 2)
-
-{
-
-str3 = " " + par;
-
-}
-
-else
-
-{
-
-str3 = stroka;
-
-}
-
-pTextFile << str1 << str2 << str3 << endl;
-
-countStr = 0;
-
-}
-
-}
-
-else
-
-{
-
-break;
-
-}
-
-}
-
-FileInfo();
+    FileInfo();
 
 }
 
@@ -375,154 +303,87 @@ void menu()
 
 {
 
-int choice;
-
-cout << "-----------------------------------------------------------------" << endl;
-
-cout << "1. Преобразование тестовых данных в двоичный файл" << endl;
-
-cout << "2. Отображение всех записей двоичного файла" << endl;
-
-cout << "3. Определение не ключевого параметра записи по ключу" << endl;
-
-cout << "4. Замена не ключевого параметра у нескольких записей по ключу" << endl;
-
-cout << "0. Выход" << endl;
-
-cout << "-----------------------------------------------------------------" << endl;
-
-cout << "Введите команду: ";
-
-cin >> choice;
-
-cout << endl;
-
-switch (choice)
-
-{
-
-case 1:
-
-{
-
-FileInfo();
-
-menu();
-
-break;
-
-}
-
-case 2:
-
-{
-
-print();
-
-menu();
-
-break;
-
-}
-
-case 3:
-
-{
-
-int confirmation;
-
-cout << "Какой параметр вы хотите получить?" << endl;
-
-cout << "1. ФИО" << endl;
-
-cout << "2. Адрес" << endl;
-
-cout << "Введите команду: ";
-
-cin >> confirmation;
-
-if (confirmation != 1 && confirmation != 2)
-
-{
-
-cout << "Неверная команда" << endl;
-
-menu();
-
-}
-
-definition(confirmation);
-
-menu();
-
-break;
-
-}
-
-case 4: {
-
-int confirmation;
-
-cout << "Какой параметр вы хотите заменить?" << endl;
-
-cout << "1. ФИО" << endl;
-
-cout << "2. Адрес" << endl;
-
-cout << "Введите команду: ";
-
-cin >> confirmation;
-
-if (confirmation == 1 || confirmation == 2)
-
-{
-
-Replace(confirmation);
-
-}
-
-else
-
-{
-
-cout << "Неверная команда" << endl;
-
-menu();
-
-}
-
-menu();
-
-break;
-
-}
-
-case 0:
-
-{
-
-exit(0);
-
-}
-
-default:
-
-{
-
-cout << "Неверная команда" << endl;;
-
-menu();
-
-}
-
-}
+    int choice;
+
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "1. Преобразование тестовых данных в двоичный файл" << endl;
+    cout << "2. Отображение всех записей двоичного файла" << endl;
+    cout << "3. Определение не ключевого параметра записи по ключу" << endl;
+    cout << "4. Замена не ключевого параметра у нескольких записей по ключу" << endl;
+    cout << "0. Выход" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "Введите команду: ";
+    cin >> choice;
+    cout << endl;
+
+    switch (choice)
+    {
+
+    case 1:
+    {
+        FileInfo();
+        menu();
+        break;
+    }
+
+    case 2:
+    {
+        print();
+        menu();
+        break;
+    }
+    case 3:
+    {
+        int confirmation;
+        cout << "Какой параметр вы хотите получить?" << endl;
+        cout << "1. ФИО" << endl;
+        cout << "2. Адрес" << endl;
+        cout << "Введите команду: ";
+        cin >> confirmation;
+        if (confirmation != 1 && confirmation != 2)
+        {
+            cout << "Неверная команда" << endl;
+            menu();
+        }
+        definition(confirmation);
+        menu();
+        break;
+    }
+
+    case 4: {
+        int confirmation;
+        cout << "Какой параметр вы хотите заменить?" << endl;
+        cout << "1. ФИО" << endl;
+        cout << "2. Адрес" << endl;
+        cout << "Введите команду: ";
+        cin >> confirmation;
+        if (confirmation == 1 || confirmation == 2)
+        {
+            Replace(confirmation);
+        }
+        else
+        {
+            cout << "Неверная команда" << endl;
+            menu();
+        }
+        menu();
+        break;
+    }
+    case 0:
+    {
+        exit(0);
+    }
+    default:
+    {
+        cout << "Неверная команда" << endl;;
+        menu();
+    }
+    }
 
 }
 
 int main(int argc, char const* argv[])
 
 {
-
-menu();
-
+    menu();
 }
